@@ -95,8 +95,8 @@ class Module extends \yii\base\Module
                 \Yii::$container->set('access_token', $this->storageMap['access_token']);
             }
             
-            foreach($this->storageMap as $name) {
-                $storages[$name] = \Yii::$container->get($name);
+            foreach($this->storageMap as $key => $name) {
+                $storages[$key] = \Yii::$container->get($name);
             }
             
             $grantTypes = [];
