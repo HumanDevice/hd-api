@@ -56,10 +56,6 @@ class Module extends \yii\base\Module
      * @var type max access lifetime
      */
     public $tokenAccessLifetime;
-    /**
-     * @var whether to use JWT tokens
-     */
-    public $useJwtToken = false;//ADDED
     
     /**
      * @inheritdoc
@@ -80,21 +76,6 @@ class Module extends \yii\base\Module
     {
         if(!$this->has('server')) {
             $storages = [];
-            
-            if($this->useJwtToken)
-            {
-                if(!array_key_exists('access_token', $this->storageMap) || !array_key_exists('public_key', $this->storageMap)) {
-                        throw new \yii\base\InvalidConfigException('access_token and public_key must be set or set useJwtToken to false');
-                }
-                //define dependencies when JWT is used instead of normal token
-                \Yii::$container->clear('public_key'); //remove old definition
-                \Yii::$container->set('public_key', $this->storageMap['public_key']);
-                \Yii::$container->set('OAuth2\Storage\PublicKeyInterface', $this->storageMap['public_key']);
-
-                \Yii::$container->clear('access_token'); //remove old definition
-                \Yii::$container->set('access_token', $this->storageMap['access_token']);
-            }
-            
             foreach($this->storageMap as $key => $name) {
                 $storages[$key] = \Yii::$container->get($name);
             }
@@ -119,7 +100,6 @@ class Module extends \yii\base\Module
                 $this,
                 $storages,
                 [
-                    'use_jwt_access_tokens' => $this->useJwtToken,//ADDED
                     'token_param_name' => $this->tokenParamName,
                     'access_lifetime' => $this->tokenAccessLifetime,
                     /** add more ... */
