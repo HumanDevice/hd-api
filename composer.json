@@ -27,5 +27,8 @@
         "psr-4": {
             "hd\\yii2\\oauth2server\\": ""
         }
+    },
+    "extra": {
+        "bootstrap": "hd\\yii2\\oauth2server\\Bootstrap"
     }
 }
